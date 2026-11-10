@@ -1,5 +1,5 @@
 ---
-# Files starting with "_" are ignored. Copy this to e.g. my-first-post.md to publish.
+# Template for writing outside the editor (e.g. Obsidian). Save as src/content/blog/<slug>.md.
 title: Post title
 description: One line shown in the post list and RSS.
 date: 2026-11-10
