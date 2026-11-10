@@ -6,9 +6,10 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    description: z.string().optional(),
     date: z.coerce.date(),
-    updated: z.coerce.date().optional(),
+    // The editor writes empty dates as null; treat that as unset.
+    updated: z.preprocess((v) => v ?? undefined, z.coerce.date().optional()),
+    description: z.string().nullish().transform((v) => v || undefined),
     tags: z.array(z.enum(TAG_SLUGS)).default([]),
     draft: z.boolean().default(false),
   }),

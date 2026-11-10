@@ -3,14 +3,17 @@ import Base from '../layouts/Base.astro';
 import PostList from '../components/PostList.astro';
 import Pledge from '../components/Pledge.astro';
 import { getPosts } from '../lib';
+import home from '../data/home.json';
+const intro = home.intro.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const recent = (await getPosts()).slice(0, 5);
 ---
 <Base>
   <section class="card hero">
     <h1 class="pt">Hi, I'm Danny.</h1>
-    <!-- TODO(Danny): your intro, in your words. Delete the .todo line when done. -->
-    <p class="todo">Placeholder: Danny writes the intro.</p>
-    <p style="margin:0">I reverse engineer things, build for the web, and write it all up here.</p>
+    {intro.length === 0
+      ? <p class="todo">Placeholder: Danny writes the intro (/keystatic → Home page).</p>
+      : intro.map((para) => <p>{para}</p>)}
+    {home.tagline && <p style="margin:0">{home.tagline}</p>}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
       <a class="btn primary" href="/blog">Read the blog</a>
       <a class="btn" href="/projects">Projects</a>
