@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { TAGS, TAG_SLUGS, type TagSlug } from '../../data/tags';
+import { getPosts } from '../../lib';
+export function getStaticPaths() { return TAG_SLUGS.map((tag) => ({ params: { tag } })); }
+const tag = Astro.params.tag as TagSlug;
+const posts = (await getPosts()).filter((p) => p.data.tags.includes(tag));
+---
+<Base title={TAGS[tag].label} description={TAGS[tag].blurb}>
+  <h1 class="pt">{TAGS[tag].label}</h1>
+  <p class="lede">{TAGS[tag].blurb}</p>
+  <PostList posts={posts} emptyText={`No ${TAGS[tag].label} posts yet.`} />
+</Base>

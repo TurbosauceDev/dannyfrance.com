@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+// TODO(Danny): fill these in. Each entry: { what, where, when, note? }.
+const sections = [
+  { title: 'Experience', items: [] as { what: string; where: string; when: string; note?: string }[] },
+  { title: 'Skills', items: [] },
+  { title: 'Education & certs', items: [] },
+];
+---
+<Base title="Resume" description="Danny France's resume.">
+  <h1 class="pt">Resume</h1>
+  <p class="lede">Reverse engineering, security research and web development.</p>
+  <p class="todo">Placeholder: Danny fills in the resume (src/pages/resume.astro).</p>
+  {sections.map((s) => (
+    <section class="rsec">
+      <h2>{s.title}</h2>
+      <div class="card">
+        {s.items.length === 0 ? <p class="muted" style="margin:0">Coming soon.</p> :
+          s.items.map((i: any) => (
+            <div class="rrow"><div><b>{i.what}</b> <span class="muted">· {i.where}</span>{i.note && <div class="sub">{i.note}</div>}</div><span class="meta">{i.when}</span></div>
+          ))}
+      </div>
+    </section>
+  ))}
+</Base>

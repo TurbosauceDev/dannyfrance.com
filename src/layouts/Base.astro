@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+import { TAGS } from '../data/tags';
+import { getPosts } from '../lib';
+interface Props { title?: string; description?: string }
+const { title, description = 'Danny France: reverse engineering, security research, web dev and hobbies. Every post written by a human.' } = Astro.props;
+const fullTitle = title ? `${title} · Danny France` : 'Danny France';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const posts = await getPosts();
+const count = (t: string) => posts.filter((p) => p.data.tags.includes(t as any)).length;
+const cur = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/')) ? 'page' : undefined;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate" type="application/rss+xml" title="Danny France" href="/rss.xml" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta name="theme-color" content="#0f0f0f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="brand" href="/">Danny France</a>
+      <p>Reverse engineering, security research, web dev, and whatever I'm into this week.</p>
+    </header>
+    <div class="layout">
+      <aside class="side">
+        <nav aria-label="Site">
+          <span class="sgh">Home</span>
+          <ul>
+            <li><a class="nl" href="/" aria-current={cur('/')}>About</a></li>
+            <li><a class="nl" href="/projects" aria-current={cur('/projects')}>Projects</a></li>
+            <li><a class="nl" href="/resume" aria-current={cur('/resume')}>Resume</a></li>
+          </ul>
+          <span class="sgh">Blog</span>
+          <ul>
+            <li><a class="nl" href="/blog" aria-current={cur('/blog')}>All posts<span class="cnt">{posts.length}</span></a></li>
+          </ul>
+          <span class="sgh tagsgroup">Tags</span>
+          <ul class="tagsgroup">
+            {Object.entries(TAGS).map(([slug, t]) => (
+              <li><a class="nl" href={`/tags/${slug}`} aria-current={cur(`/tags/${slug}`)}>{t.label}<span class="cnt">{count(slug)}</span></a></li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+      <main id="main"><slot /></main>
+    </div>
+    <footer class="site-foot">
+      <span>© {new Date().getFullYear()} Danny France</span>
+      <a class="badge" href="/human">✓ Every post written by me, not an LLM</a>
+      <a href="/rss.xml">RSS</a>
+    </footer>
+  </div>
+</body>
+</html>
