@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { PROJECTS } from '../data/projects';
+import { TAGS } from '../data/tags';
+const tone = (s: string) => (/active|running/i.test(s) ? 'p-good' : 'p-hot');
+---
+<Base title="Projects" description="Things Danny has built.">
+  <h1 class="pt">Projects</h1>
+  <p class="lede">Things I've built or am building.</p>
+  <p class="todo">Placeholder copy: Danny rewrites these one-liners (src/data/projects.ts).</p>
+  <div class="grid2">
+    {PROJECTS.map((p) => (
+      <article class="card">
+        <div class="tags">{p.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{TAGS[t as keyof typeof TAGS].label}</a>)}</div>
+        <h3>{p.url ? <a href={p.url}>{p.name}</a> : p.name}</h3>
+        <p class="muted" style="margin:0 0 10px;font-size:15px">{p.blurb}</p>
+        <div style="display:flex;gap:8px;align-items:center"><span class={`pill ${tone(p.status)}`}>{p.status}</span><span class="meta">{p.when}</span></div>
+      </article>
+    ))}
+  </div>
+</Base>

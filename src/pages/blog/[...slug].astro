@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render } from 'astro:content';
+import { TAGS } from '../../data/tags';
+import { getPosts, fmtDate } from '../../lib';
+export async function getStaticPaths() {
+  return (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<Base title={post.data.title} description={post.data.description}>
+  <article>
+    <div class="tags">{post.data.tags.map((t) => <a class="tag" href={`/tags/${t}`}>{TAGS[t].label}</a>)}</div>
+    <h1 class="pt">{post.data.title}</h1>
+    <p class="meta" style="margin:0 0 18px">
+      <time datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+      {post.data.updated && <> · updated <time datetime={post.data.updated.toISOString()}>{fmtDate(post.data.updated)}</time></>}
+      · <a href="/human">written by Danny</a>
+    </p>
+    <div class="card prose"><Content /></div>
+  </article>
+  <p style="margin-top:18px"><a href="/blog">← All posts</a></p>
+</Base>

@@ -1,0 +1,19 @@
+---
+import { TAGS } from '../data/tags';
+import { fmtDate } from '../lib';
+const { posts, emptyText = 'No posts yet.' } = Astro.props;
+---
+{posts.length === 0 ? (
+  <div class="empty"><b>{emptyText}</b><br />The first write-ups are on the way.</div>
+) : (
+  <div class="posts">
+    {posts.map((p: any) => (
+      <article class="card post-item">
+        <div class="tags">{p.data.tags.map((t: keyof typeof TAGS) => <a class="tag" href={`/tags/${t}`}>{TAGS[t].label}</a>)}{p.data.draft && <span class="pill p-warn">Draft</span>}</div>
+        <h3><a href={`/blog/${p.id}/`}>{p.data.title}</a></h3>
+        <time class="meta" datetime={p.data.date.toISOString()}>{fmtDate(p.data.date)}</time>
+        {p.data.description && <p>{p.data.description}</p>}
+      </article>
+    ))}
+  </div>
+)}

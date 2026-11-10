@@ -1,0 +1,11 @@
+---
+import { PLEDGE } from '../data/pledge';
+---
+<figure class="pledge" style="margin:0">
+  <div class="ph">
+    <div class="av" aria-hidden="true">D</div>
+    <div><span class="who">Danny</span><time datetime={PLEDGE.iso}>{PLEDGE.local} · {PLEDGE.iso.replace('T', ' ').replace('Z', ' UTC')}</time></div>
+  </div>
+  <blockquote>{PLEDGE.quote}</blockquote>
+  <figcaption class="stamp">Quoted word for word from the message where I asked for this site to be built.</figcaption>
+</figure>

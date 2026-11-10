@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { TAGS } from '../../data/tags';
+import { getPosts } from '../../lib';
+const posts = await getPosts();
+---
+<Base title="Blog" description="All posts.">
+  <h1 class="pt">Blog</h1>
+  <p class="lede">Write-ups on reverse engineering, security, web dev and hobbies.</p>
+  <div class="tags" style="margin-bottom:16px">{Object.entries(TAGS).map(([s, t]) => <a class="tag" href={`/tags/${s}`}>{t.label}</a>)}</div>
+  <PostList posts={posts} />
+</Base>
