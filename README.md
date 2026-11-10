@@ -1,5 +1,7 @@
 # dannyfrance.com
 
+danny's personal blog. please hire him, he needs to pay for this crap.
+
 Danny's blog and portfolio. Astro, deployed on Vercel. **Every post is written by Danny. No LLM-generated posts.**
 
 ## Write a post
